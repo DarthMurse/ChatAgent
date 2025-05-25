@@ -1,0 +1,7 @@
+smolagents
+flask
+flask-cors
+openai
+anthropic
+requests
+python-dotenv

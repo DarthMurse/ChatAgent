@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Agent</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/index.css">
+    
+    <!-- Local Prism CSS instead of CDN -->
+    <link rel="stylesheet" href="/static/css/vendor/prism/prism.min.css">
+    
+    <!-- Preload critical scripts -->
+    <link rel="preload" href="/static/js/index.js" as="script">
+    <link rel="preload" href="/static/js/vendor/marked/marked.min.js" as="script">
+    
+    <!-- Configure MathJax before loading it -->
+    <script type="text/javascript">
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\(', '\)']],
+                displayMath: [['$$', '$$'], ['\[', '\]'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            startup: {
+                pageReady() {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('MathJax initial typesetting complete');
+                    });
+                }
+            }
+        };
+    </script>
+    
+    <!-- Local JS libraries instead of CDN -->
+    <script src="/static/js/vendor/marked/marked.min.js"></script>
+    <script src="/static/js/vendor/prism/prism-core.min.js"></script>
+    <script src="/static/js/vendor/prism/prism-autoloader.min.js"></script>
+    <script id="MathJax-script" src="/static/js/vendor/mathjax/tex-mml-chtml.js" async></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Chat Agent</h2>
+        
+        <button class="new-chat-btn" onclick="newChat()">+ New Chat</button>
+        
+        <div class="chat-sessions">
+            <h3 style="margin-bottom: 10px; font-size: 14px;">Chat Sessions</h3>
+            <div id="chat-sessions-list"></div>
+        </div>
+        
+        <div class="api-keys-section">
+            <h3 style="margin-bottom: 15px; font-size: 14px;">API Keys</h3>
+            
+            <div class="api-key-form">
+                <select id="provider-select">
+                    <option value="">Select Provider</option>
+                    <option value="openai">OpenAI</option>
+                    <option value="claude">Claude</option>
+                    <option value="deepseek">DeepSeek</option>
+                </select>
+                <input type="password" id="api-key-input" placeholder="API Key">
+                <input type="text" id="models-input" placeholder="Models (comma-separated)">
+                <div class="model-examples" id="model-examples" style="font-size: 11px; color: #a0aec0; margin-bottom: 8px; display: none;">
+                    <!-- Examples will be populated by JavaScript -->
+                </div>
+                <button onclick="saveApiKey()">Save Key</button>
+            </div>
+            
+            <div class="configured-providers">
+                <h4 style="margin-bottom: 10px; font-size: 12px;">Configured:</h4>
+                <div id="configured-providers-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="chat-header">
+            <h1 id="chat-title">Chat Agent</h1>
+            <div class="model-selector">
+                <label>Model:</label>
+                <select id="model-select">
+                    <option value="">Select Model</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="chat-container" id="chat-container">
+            <div class="welcome">
+                <h2>Welcome to Chat Agent</h2>
+                <p>Configure your API keys and start a new chat to begin.</p>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <form class="input-form" onsubmit="sendMessage(event)">
+                <input type="text" class="message-input" id="message-input" placeholder="Type your message..." disabled>
+                <button type="submit" class="send-btn" id="send-btn" disabled>Send</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Load our JS file at the end to ensure DOM is ready -->
+    <script src="/static/js/index.js"></script>
+</body>
+</html>
